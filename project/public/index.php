@@ -14,7 +14,6 @@ Zend_Loader::loadClass('Zend_Config');
 Zend_Loader::loadClass('Zend_Config_Ini');
 Zend_Loader::loadClass('Zend_Db');
 Zend_Loader::loadClass('Zend_Db_Table_Abstract');
-// require_once('../library/Zend/Db/Table/Abstract.php');
 Zend_Loader::loadClass('Zend_Controller_Action_Helper_Abstract');
 Zend_Loader::loadClass('Zend_Controller_Action_HelperBroker');
 Zend_Loader::loadClass('Zend_View_Helper_Abstract');
@@ -36,7 +35,7 @@ Zend_Loader::loadClass('Zend_Validate_NotEmpty');
 //StartMVC
 $mvc_options = array(
     'layout'     => 'default',
-    'layoutPath' => '../app/layouts',
+    'layoutPath' => '../app/views/layouts',
 );
 $layout = Zend_Layout::startMvc($mvc_options);
 
@@ -60,7 +59,7 @@ Zend_Controller_Action_HelperBroker::addPath('../app/helpers/actions', 'Helper_'
 
 //Set View Helpers
 $view = new Zend_View();
-$view->addHelperPath('../app/helpers/views/', 'View_Helper_');			
+$view->addHelperPath('../app/helpers/views/', 'View_Helper_');
 $renderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
 $renderer->setView($view);
 
@@ -68,10 +67,10 @@ $renderer->setView($view);
 $front = Zend_Controller_Front::getInstance();
 
 //Set Controllers
-// $front->setControllerDirectory('../app/controllers');
+$front->setControllerDirectory('../app/controllers');
 //Setting up modules
-$front->addModuleDirectory('../app/modules');
-$front->setDefaultModule('default');
+// $front->addModuleDirectory('../app/modules');
+// $front->setDefaultModule('default');
 
 $front->throwExceptions((int)$errors['throwExceptions']);
 $front->dispatch();
