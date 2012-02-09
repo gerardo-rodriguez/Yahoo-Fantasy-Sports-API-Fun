@@ -40,7 +40,7 @@ $mvc_options = array(
 $layout = Zend_Layout::startMvc($mvc_options);
 
 /* Config via ini */
-$config = new Zend_Config_Ini('../app/configs/config.ini', getenv('APPLICATION_ENVIRONMENT'));
+$config = new Zend_Config_Ini('../app/configs/application.ini', getenv('APPLICATION_ENVIRONMENT'));
 
 /* Error Reporting */
 $errors = $config->errors->toArray();

@@ -10,8 +10,6 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 { 
 
 	protected $appConfig;
-	// protected $localConfig;
-	protected $twitterService;
 	protected $appSession;
 	
 	/**
@@ -19,7 +17,7 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	*/
 	public function __construct() 
 	{ 
-		$this->appConfig = new Zend_Config_Ini('../../application/configs/application.ini', 'production');
+		$this->appConfig = new Zend_Config_Ini('../configs/application.ini', 'production');
 		
 		$this->appSession = new Zend_Session_Namespace('FantasyApp');
 	}
@@ -32,7 +30,7 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	{
 		$isAuthenticated = false;
 		
-		if( isset($this->appSession->twitterAccessToken) ) { 
+		if( isset($this->appSession->yahooAccessToken) ) { 
 			$isAuthenticated = true;
 		}
 		
@@ -46,10 +44,10 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	{
 		// our config details
 		$oauthConfig = array(
-			'siteUrl' => $this->appConfig->twitter->oauth_url,
-			'callbackUrl' => $this->localConfig->twitter->callback_url,
-			'consumerKey' => $this->localConfig->twitter->consumer_key,
-			'consumerSecret' => $this->localConfig->twitter->consumer_secret
+			// 'siteUrl' => $this->appConfig->yahoo->oauth_url,
+			'callbackUrl' => $this->appConfig->yahoo->callback_url,
+			'consumerKey' => $this->appConfig->yahoo->consumer_key,
+			'consumerSecret' => $this->appConfig->yahoo->consumer_secret
 		);
 		$consumer = new Zend_Oauth_Consumer($oauthConfig);
 		
@@ -57,12 +55,10 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 		$token = $consumer->getRequestToken();
 		
 		// persist the token to storage
-		$this->appSession->twitterRequestToken = serialize($token);
-		$this->logger->info('TwitterData::authenticate(): twitterRequestToken saved to session: ' . $this->appSession->twitterRequestToken);
+		$this->appSession->yahooRequestToken = serialize($token);
 		
 		// redirect the user
 		$consumer->redirect();
-		
 	}
 	
 	/**
@@ -70,35 +66,29 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	 */
 	public function handleCallback()
 	{
-		$this->logger->info('TwitterData::handleCallback() called.');
 		// our config details
 		$oauthConfig = array(
-			'siteUrl' => $this->appConfig->twitter->oauth_url,
-			'callbackUrl' => $this->localConfig->twitter->callback_url,
-			'consumerKey' => $this->localConfig->twitter->consumer_key,
-			'consumerSecret' => $this->localConfig->twitter->consumer_secret
+			// 'siteUrl' => $this->appConfig->yahoo->oauth_url,
+			'callbackUrl' => $this->appConfig->yahoo->callback_url,
+			'consumerKey' => $this->appConfig->yahoo->consumer_key,
+			'consumerSecret' => $this->appConfig->yahoo->consumer_secret
 		);
 		$consumer = new Zend_Oauth_Consumer($oauthConfig);
-		
-		$this->logger->info('handleCallback: $this->appSession->twitterRequestToken = ' . $this->appSession->twitterRequestToken);
-		
+				
 		// Check to make sure that the Request Token has already been established.
-		if (!empty($_GET) && isset($this->appSession->twitterRequestToken))
+		if (!empty($_GET) && isset($this->appSession->yahooRequestToken))
 		{
-		    $token = $consumer->getAccessToken($_GET, unserialize($this->appSession->twitterRequestToken));
+		    $token = $consumer->getAccessToken($_GET, unserialize($this->appSession->yahooRequestToken));
 
 			// Let's keep the Access Token in session, as we'll need it later
-    		$this->appSession->twitterAccessToken = serialize($token);
+    		$this->appSession->yahooAccessToken = serialize($token);
 
 		    // Now that we have an Access Token, we can discard the Request Token
-		    //$this->appSession->twitterRequestToken = null;  // NOTE: for some reason Twitter has been sending back the request token more than once per user, and we error out because we have deleted the request token.
-		    
-		    $this->logger->info('handleCallback: twitter access token received.');
-		    
+		    //$this->appSession->yahooRequestToken = null;  // NOTE: for some reason Twitter has been sending back the request token more than once per user, and we error out because we have deleted the request token.
+			echo 'Way...';
 		 } else {
 		    // Mistaken request? Some malfeasant trying something?
-		    throw new Exception('handleCallback: Invalid callback request. Oops. Sorry.  $_GET is empty or $this->appSession->twitterRequestToken is not set.');
-		    $this->logger->info('handleCallback: Invalid callback request. Oops. Sorry.  $_GET is empty or $this->appSession->twitterRequestToken is not set.');
+		    throw new Exception('handleCallback: Invalid callback request. Oops. Sorry.  $_GET is empty or $this->appSession->yahooRequestToken is not set.');
 		}
 	}
 	
@@ -107,8 +97,8 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	*/
 	public function endUserSession()
 	{
-		$this->setupTwitterService();
-		$this->twitterService->account->endSession();
+		// $this->setupTwitterService();
+		// $this->twitterService->account->endSession();
 	}
 	
 	/**
