@@ -36,12 +36,12 @@
 		//-------------------------------------------------
 		public function indexAction()
 		{
-			// $this->yahooAPI->authenticate();
+			$this->yahooAPI->authenticate();
 		}
 		
 		public function callback()
 		{
-			// $this->yahooAPI->handleCallback();
+			$this->yahooAPI->handleCallback();
 		}
 		//-------------------------------------------------
 		// Private Methods
