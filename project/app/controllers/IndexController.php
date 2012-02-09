@@ -29,7 +29,7 @@
 			
 			//Access to helpers
 			$this->redirector = $this->_helper->getHelper('Redirector');
-			// $this->yahooAPI = $this->_helper->getHelper('YahooFantasyAPI');
+			$this->yahooAPI = $this->_helper->getHelper('YahooFantasyAPI');
 		}
 		//-------------------------------------------------
 		// Public Methods
