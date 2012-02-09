@@ -39,7 +39,7 @@
 			$this->yahooAPI->authenticate();
 		}
 		
-		public function callback()
+		public function callbackAction()
 		{
 			$this->yahooAPI->handleCallback();
 		}
