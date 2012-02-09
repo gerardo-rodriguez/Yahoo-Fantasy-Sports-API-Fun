@@ -45,7 +45,7 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	{
 		// our config details
 		$oauthConfig = array(
-			// 'siteUrl' => $this->appConfig->yahoo->oauth_url,
+			'siteUrl' => $this->appConfig->yahoo->oauth_url,
 			'callbackUrl' => $this->appConfig->yahoo->callback_url,
 			'consumerKey' => $this->appConfig->yahoo->consumer_key,
 			'consumerSecret' => $this->appConfig->yahoo->consumer_secret
@@ -69,7 +69,7 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	{
 		// our config details
 		$oauthConfig = array(
-			// 'siteUrl' => $this->appConfig->yahoo->oauth_url,
+			'siteUrl' => $this->appConfig->yahoo->oauth_url,
 			'callbackUrl' => $this->appConfig->yahoo->callback_url,
 			'consumerKey' => $this->appConfig->yahoo->consumer_key,
 			'consumerSecret' => $this->appConfig->yahoo->consumer_secret
