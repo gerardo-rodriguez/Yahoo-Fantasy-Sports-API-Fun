@@ -17,7 +17,7 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	*/
 	public function __construct() 
 	{ 
-		$this->appConfig = new Zend_Config_Ini('../configs/application.ini', 'production');
+		$this->appConfig = new Zend_Config_Ini('../../configs/application.ini', 'production');
 		
 		$this->appSession = new Zend_Session_Namespace('FantasyApp');
 	}
