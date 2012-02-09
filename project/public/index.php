@@ -22,14 +22,16 @@ Zend_Loader::loadClass('Zend_Session_Namespace');
 Zend_Loader::loadClass('Zend_Layout');
 
 Zend_Loader::loadClass('Zend_Controller_Router_Rewrite');
-Zend_Loader::loadClass('Zend_Form');
+// Zend_Loader::loadClass('Zend_Form');
 Zend_Loader::loadClass('Zend_Debug');
-Zend_Loader::loadClass('Zend_Auth');
-Zend_Loader::loadClass('Zend_Auth_Adapter_DbTable');
-Zend_Loader::loadClass('Zend_Auth_Storage_Session');
-Zend_Loader::loadClass('Zend_Mail');
+// Zend_Loader::loadClass('Zend_Auth');
+// Zend_Loader::loadClass('Zend_Auth_Adapter_DbTable');
+// Zend_Loader::loadClass('Zend_Auth_Storage_Session');
+// Zend_Loader::loadClass('Zend_Mail');
 
 Zend_Loader::loadClass('Zend_Validate_NotEmpty');
+
+Zend_Loader::loadClass('Zend_Oauth_Consumer');
 
 //StartMVC
 $mvc_options = array(
