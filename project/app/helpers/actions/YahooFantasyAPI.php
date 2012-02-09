@@ -4,13 +4,13 @@
 // require_once 'My/logging.php';
 
 /**
-* retrieves and processes social data from Twitter
+* retrieves and processes fantasy basketball data from yahoo api
 */
 class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 { 
 
-	// protected $appConfig;
-	protected $localConfig;
+	protected $appConfig;
+	// protected $localConfig;
 	protected $twitterService;
 	protected $appSession;
 	
@@ -19,7 +19,7 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	*/
 	public function __construct() 
 	{ 
-		// $this->appConfig = new Zend_Config_Ini('../application/configs/application.ini', 'production');
+		$this->appConfig = new Zend_Config_Ini('../../application/configs/application.ini', 'production');
 		
 		$this->appSession = new Zend_Session_Namespace('FantasyApp');
 	}
@@ -44,8 +44,6 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	 */
 	public function authenticate()
 	{
-		$this->logger->info('TwitterData::authenticate called.');
-		
 		// our config details
 		$oauthConfig = array(
 			'siteUrl' => $this->appConfig->twitter->oauth_url,
