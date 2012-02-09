@@ -53,16 +53,20 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 			'consumerKey' => $this->appConfig->yahoo->consumer_key,
 			'consumerSecret' => $this->appConfig->yahoo->consumer_secret
 		);
-		$consumer = new Zend_Oauth_Consumer($oauthConfig);
+		try{
+			$consumer = new Zend_Oauth_Consumer($oauthConfig);
 		
-		// fetch a request token
-		$token = $consumer->getRequestToken();
+			// fetch a request token
+			$token = $consumer->getRequestToken();
 		
-		// persist the token to storage
-		$this->appSession->yahooRequestToken = serialize($token);
+			// persist the token to storage
+			$this->appSession->yahooRequestToken = serialize($token);
 		
-		// redirect the user
-		$consumer->redirect();
+			// redirect the user
+			$consumer->redirect();
+		} catch(Exception $e) {
+			echo $e;
+		}
 	}
 	
 	/**
