@@ -9,20 +9,19 @@
 class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 { 
 
-	protected $appConfig;
+	// protected $appConfig;
 	protected $localConfig;
 	protected $twitterService;
-	protected $tiggerSession;
+	protected $appSession;
 	
 	/**
 	* Initialize our object
 	*/
 	public function __construct() 
 	{ 
-		$this->appConfig = new Zend_Config_Ini('../application/configs/application.ini', 'production');
-		$this->localConfig = new Zend_Config_Ini('../application/configs/local_environment.ini', 'production');
+		// $this->appConfig = new Zend_Config_Ini('../application/configs/application.ini', 'production');
 		
-		$this->tiggerSession = new Zend_Session_Namespace('Tigger');
+		$this->appSession = new Zend_Session_Namespace('FantasyApp');
 	}
 	
 	/**
@@ -33,7 +32,7 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 	{
 		$isAuthenticated = false;
 		
-		if( isset($this->tiggerSession->twitterAccessToken) ) { 
+		if( isset($this->appSession->twitterAccessToken) ) { 
 			$isAuthenticated = true;
 		}
 		
@@ -60,8 +59,8 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 		$token = $consumer->getRequestToken();
 		
 		// persist the token to storage
-		$this->tiggerSession->twitterRequestToken = serialize($token);
-		$this->logger->info('TwitterData::authenticate(): twitterRequestToken saved to session: ' . $this->tiggerSession->twitterRequestToken);
+		$this->appSession->twitterRequestToken = serialize($token);
+		$this->logger->info('TwitterData::authenticate(): twitterRequestToken saved to session: ' . $this->appSession->twitterRequestToken);
 		
 		// redirect the user
 		$consumer->redirect();
@@ -83,25 +82,25 @@ class Helper_YahooFantasyAPI extends Zend_Controller_Action_Helper_Abstract
 		);
 		$consumer = new Zend_Oauth_Consumer($oauthConfig);
 		
-		$this->logger->info('handleCallback: $this->tiggerSession->twitterRequestToken = ' . $this->tiggerSession->twitterRequestToken);
+		$this->logger->info('handleCallback: $this->appSession->twitterRequestToken = ' . $this->appSession->twitterRequestToken);
 		
 		// Check to make sure that the Request Token has already been established.
-		if (!empty($_GET) && isset($this->tiggerSession->twitterRequestToken))
+		if (!empty($_GET) && isset($this->appSession->twitterRequestToken))
 		{
-		    $token = $consumer->getAccessToken($_GET, unserialize($this->tiggerSession->twitterRequestToken));
+		    $token = $consumer->getAccessToken($_GET, unserialize($this->appSession->twitterRequestToken));
 
 			// Let's keep the Access Token in session, as we'll need it later
-    		$this->tiggerSession->twitterAccessToken = serialize($token);
+    		$this->appSession->twitterAccessToken = serialize($token);
 
 		    // Now that we have an Access Token, we can discard the Request Token
-		    //$this->tiggerSession->twitterRequestToken = null;  // NOTE: for some reason Twitter has been sending back the request token more than once per user, and we error out because we have deleted the request token.
+		    //$this->appSession->twitterRequestToken = null;  // NOTE: for some reason Twitter has been sending back the request token more than once per user, and we error out because we have deleted the request token.
 		    
 		    $this->logger->info('handleCallback: twitter access token received.');
 		    
 		 } else {
 		    // Mistaken request? Some malfeasant trying something?
-		    throw new Exception('handleCallback: Invalid callback request. Oops. Sorry.  $_GET is empty or $this->tiggerSession->twitterRequestToken is not set.');
-		    $this->logger->info('handleCallback: Invalid callback request. Oops. Sorry.  $_GET is empty or $this->tiggerSession->twitterRequestToken is not set.');
+		    throw new Exception('handleCallback: Invalid callback request. Oops. Sorry.  $_GET is empty or $this->appSession->twitterRequestToken is not set.');
+		    $this->logger->info('handleCallback: Invalid callback request. Oops. Sorry.  $_GET is empty or $this->appSession->twitterRequestToken is not set.');
 		}
 	}
 	
